@@ -38,16 +38,8 @@ app = FastAPI(
 # ---------------------------------------------------------------------------
 
 class CepRequest(BaseModel):
-    cep_origem: str = Field(
-        ...,
-        description="CEP de origem (8 dígitos)",
-        json_schema_extra={"example": "01001000"},
-    )
-    cep_destino: str = Field(
-        ...,
-        description="CEP de destino (8 dígitos)",
-        json_schema_extra={"example": "20040020"},
-    )
+    cep_origem: str = Field(..., example="01001000", description="CEP de origem (8 dígitos)")
+    cep_destino: str = Field(..., example="20040020", description="CEP de destino (8 dígitos)")
 
 
 class DistanciaResponse(BaseModel):
@@ -183,8 +175,8 @@ def root():
 @app.get("/distancia", response_model=DistanciaResponse, tags=["Distância"])
 def distancia_por_url(
     request: Request,
-    cep_origem: str = Query(..., examples=["01001000"], description="CEP de origem"),
-    cep_destino: str = Query(..., examples=["20040020"], description="CEP de destino"),
+    cep_origem: str = Query(..., example="01001000", description="CEP de origem"),
+    cep_destino: str = Query(..., example="20040020", description="CEP de destino"),
 ):
     """
     Calcula distância e duração entre dois CEPs.
@@ -240,8 +232,8 @@ def distancia_por_body(request: Request, body: CepRequest):
 
 @app.get("/mapa", tags=["Mapa"])
 def gerar_mapa(
-    cep_origem: str = Query(..., examples=["01001000"]),
-    cep_destino: str = Query(..., examples=["20040020"]),
+    cep_origem: str = Query(..., example="01001000"),
+    cep_destino: str = Query(..., example="20040020"),
     width: int = Query(800, ge=200, le=1200),
     height: int = Query(600, ge=200, le=1000),
 ):
